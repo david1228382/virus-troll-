@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIRUS-TROLL</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    font-family: monospace;
+}
+
+body {
+    color: #00ff00;
+}
+
+#matrix {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+}
+
+#app {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.panel {
+    width: 100%;
+    max-width: 600px;
+    padding: 30px 20px;
+    background: rgba(0, 0, 0, 0.88);
+    border: 2px solid #00ff00;
+    box-shadow: 0 0 30px #00ff00;
+    border-radius: 10px;
+}
+
+#cara {
+    font-size: 90px;
+}
+
+h1 {
+    font-size: 34px;
+    text-shadow: 0 0 15px #00ff00;
+}
+
+#texto {
+    font-size: 18px;
+    min-height: 30px;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 15px 30px;
+    background: #001000;
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 18px;
+    box-shadow: 0 0 15px #00ff00;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+#analisis {
+    display: none;
+}
+
+#barra {
+    width: 100%;
+    height: 28px;
+    border: 2px solid #00ff00;
+    margin-top: 20px;
+}
+
+#progreso {
+    width: 0%;
+    height: 100%;
+    background: #00ff00;
+    box-shadow: 0 0 15px #00ff00;
+}
+
+#porcentaje {
+    margin-top: 10px;
+    font-size: 22px;
+}
+
+#resultado {
+    display: none;
+    color: red;
+    text-shadow: 0 0 15px red;
+}
+
+#video {
+    display: none;
+    width: 100%;
+    max-height: 300px;
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div id="app">
+    <div class="panel">
+
+        <div id="cara">🤓</div>
+
+        <h1>VIRUS-TROLL</h1>
+
+        <div id="texto">
+            Sistema preparado.
+        </div>
+
+        <button id="avanzar" onclick="avanzar()">
+            AVANZAR
+        </button>
+
+        <div id="analisis">
+
+            <button onclick="iniciarAnalisis()">
+                INICIAR ANÁLISIS
+            </button>
+
+            <div id="barra">
+                <div id="progreso"></div>
+            </div>
+
+            <div id="porcentaje">0%</div>
+
+        </div>
+
+        <div id="resultado">
+            <div id="caraFinal">☠️</div>
+
+            <h2>⚠️ ANÁLISIS COMPLETADO ⚠️</h2>
+
+            <p>
+                SE DETECTARON 37 AMENAZAS
+            </p>
+
+            <p>
+                ROBO DE ARCHIVOS DETECTADO
+            </p>
+
+            <p>
+                ATENTAMENTE, TU PAPI DAVID 😈
+            </p>
+
+            <video id="video" controls playsinline>
+                <source src="video.mp4" type="video/mp4">
+            </video>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+/* MATRIX */
+
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+function ajustarCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+ajustarCanvas();
+window.addEventListener("resize", ajustarCanvas);
+
+const letras = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&";
+const tamaño = 16;
+let columnas = Math.floor(window.innerWidth / tamaño);
+let gotas = Array(columnas).fill(1);
+
+function matrix() {
+
+    ctx.fillStyle = "rgba(0,0,0,0.08)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ff00";
+    ctx.font = tamaño + "px monospace";
+
+    for (let i = 0; i < gotas.length; i++) {
+
+        const letra =
+            letras[Math.floor(Math.random() * letras.length)];
+
+        ctx.fillText(
+            letra,
+            i * tamaño,
+            gotas[i] * tamaño
+        );
+
+        if (
+            gotas[i] * tamaño > canvas.height &&
+            Math.random() > 0.975
+        ) {
+            gotas[i] = 0;
+        }
+
+        gotas[i]++;
+    }
+}
+
+setInterval(matrix, 45);
+
+
+/* BOTÓN AVANZAR */
+
+function avanzar() {
+
+    document.getElementById("avanzar").style.display = "none";
+
+    document.getElementById("analisis").style.display = "block";
+
+    document.getElementById("texto").textContent =
+        "Sistema listo. Puedes iniciar el análisis.";
+}
+
+
+/* VOZ */
+
+function hablar(mensaje) {
+
+    if (!("speechSynthesis" in window)) {
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const voz = new SpeechSynthesisUtterance(mensaje);
+
+    voz.lang = "es-MX";
+    voz.rate = 0.85;
+    voz.pitch = 0.6;
+    voz.volume = 1;
+
+    speechSynthesis.speak(voz);
+}
+
+
+/* ANÁLISIS */
+
+function iniciarAnalisis() {
+
+    const barra = document.getElementById("progreso");
+    const porcentaje =
+        document.getElementById("porcentaje");
+
+    const texto =
+        document.getElementById("texto");
+
+    const analisis =
+        document.getElementById("analisis");
+
+    const resultado =
+        document.getElementById("resultado");
+
+    let progreso = 0;
+
+    analisis.querySelector("button").disabled = true;
+
+    texto.textContent =
+        "Analizando dispositivo...";
+
+    const intervalo = setInterval(function() {
+
+        progreso++;
+
+        barra.style.width = progreso + "%";
+
+        porcentaje.textContent =
+            progreso + "%";
+
+        if (progreso === 20) {
+            texto.textContent =
+                "Buscando archivos...";
+        }
+
+        if (progreso === 40) {
+            texto.textContent =
+                "Analizando memoria...";
+        }
+
+        if (progreso === 60) {
+            texto.textContent =
+                "Buscando amenazas...";
+        }
+
+        if (progreso === 80) {
+            texto.textContent =
+                "Analizando sistema...";
+        }
+
+        if (progreso === 100) {
+
+            clearInterval(intervalo);
+
+            terminarAnalisis();
+        }
+
+    }, 600);
+}
+
+
+/* FINAL */
+
+function terminarAnalisis() {
+
+    document.getElementById("analisis").style.display =
+        "none";
+
+    document.getElementById("cara").textContent =
+        "☠️";
+
+    document.getElementById("texto").textContent =
+        "¡ANÁLISIS COMPLETADO!";
+
+    document.getElementById("resultado").style.display =
+        "block";
+
+    hablar(
+        "Se detectaron treinta y siete amenazas. Robo de archivos detectado. Atentamente, tu papi David."
+    );
+
+    setTimeout(function() {
+
+        const video =
+            document.getElementById("video");
+
+        video.style.display = "block";
+
+    }, 2500);
+}
+
+</script>
+
+</body>
+</html>
+
